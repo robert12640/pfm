@@ -9,6 +9,31 @@
   <p>사진을 올리고, 피드백을 주고받는 공간</p>
 
   <hr />
+<section style="margin-top:20px;">
+  <h2>사진 업로드 (MVP)</h2>
+
+  <p>사진을 선택하고 간단한 설명을 남겨보세요.</p>
+
+  <!-- 사진 파일 선택 -->
+  <input type="file" accept="image/*" />
+
+  <br /><br />
+
+  <!-- 사진 설명 -->
+  <textarea
+    placeholder="이 사진에 대해 어떤 피드백을 받고 싶은지 적어주세요"
+    rows="4"
+    style="width:100%; max-width:400px;"
+  ></textarea>
+
+  <br /><br />
+
+  <!-- 업로드 버튼 (아직은 가짜) -->
+  <button onclick="alert('업로드 기능은 MVP 이후 연결됩니다')"
+          style="padding:10px 16px;">
+    사진 업로드
+  </button>
+</section>
 
   <h2>기능 (예정)</h2>
   <ul>
@@ -17,8 +42,6 @@
     <li>요소 선택 + 이유 작성</li>
     <li>공개 / 비공개 피드백</li>
   </ul>
-</body>
-</html>
 <div style="margin-top:20px;">
   <button onclick="alert('준비중입니다')" style="padding:10px 16px; margin-right:10px;">
     사진 올리고 피드백 받기
@@ -28,3 +51,6 @@
     사진 자가점검 체크리스트
   </button>
 </div>
+  
+</body>
+</html>
