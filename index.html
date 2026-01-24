@@ -2,96 +2,201 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>Photo Feedback MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>사진 피드백 커뮤니티 MVP</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    header {
+      background: #111;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      padding: 30px 0;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    textarea, input[type="file"] {
+      width: 100%;
+    }
+
+    .photo-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      background: #eee;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .views {
+      font-size: 14px;
+      margin: 6px 0;
+    }
+
+    .board-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .meetup {
+      border-left: 4px solid #111;
+      padding-left: 14px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Photo Feedback MVP</h1>
-  <p>사진을 올리고, 피드백을 주고받는 공간</p>
 
- <hr />
+<header>
+  <h1>사진 피드백 커뮤니티</h1>
+  <p>사진을 올리고, 시선을 나눕니다</p>
+</header>
 
-<section style="margin-top:20px;">
-  <h2>사진 업로드 (MVP)</h2>
+<main>
 
-  <p>사진을 선택하고 간단한 설명을 남겨보세요.</p>
+  <!-- 사진 업로드 -->
+  <div class="card">
+    <h2>📸 사진 업로드</h2>
+    <p>사진을 올리고 어떤 피드백을 받고 싶은지 알려주세요.</p>
 
-  <input type="file" accept="image/*" />
+    <input type="file" accept="image/*" />
+    <br /><br />
 
-  <br /><br />
+    <textarea rows="4"
+      placeholder="예: 색감 위주로 피드백 받고 싶어요"></textarea>
 
-  <textarea
-    placeholder="이 사진에 대해 어떤 피드백을 받고 싶은지 적어주세요"
-    rows="4"
-    style="width:100%; max-width:400px;"
-  ></textarea>
+    <br /><br />
+    <button onclick="alert('업로드 기능은 MVP 이후 연결됩니다')">
+      사진 업로드
+    </button>
+  </div>
 
-  <br /><br />
+  <!-- 피드백 요청 -->
+  <div class="card">
+    <h2>📝 피드백 요청</h2>
 
-  <button onclick="alert('업로드 기능은 MVP 이후 연결됩니다')"
-          style="padding:10px 16px;">
-    사진 업로드
-  </button>
-</section>
-  <hr />
+    <p>어떤 요소에 대한 피드백을 원하시나요?</p>
 
-<section style="margin-top:20px;">
-  <h2>피드백 남기기 (MVP)</h2>
+    <label><input type="checkbox" /> 구도</label><br/>
+    <label><input type="checkbox" /> 색감</label><br/>
+    <label><input type="checkbox" /> 스토리</label><br/>
+    <label><input type="checkbox" /> 감정</label><br/><br/>
 
-  <p>사진을 보고 간단한 반응을 남겨보세요.</p>
+    <textarea rows="3"
+      placeholder="질문이나 참고 사항을 적어주세요"></textarea>
 
-  <button onclick="alert('피드백이 저장되었습니다 (가짜)')"
-          style="padding:10px 16px; margin-right:10px;">
-    👍 봤어요
-  </button>
+    <br /><br />
+    공개 여부:
+    <label><input type="radio" name="open" checked /> 공개</label>
+    <label><input type="radio" name="open" /> 비공개</label>
+  </div>
 
-  <button onclick="alert('조언 피드백은 곧 제공됩니다')"
-          style="padding:10px 16px;">
-    💬 조언 남기기
-  </button>
-</section>
-  <hr />
+  <!-- 사진 피드 -->
+  <div class="card">
+    <h2>🖼️ 사진 피드</h2>
 
-<section style="margin-top:20px;">
-  <h3>어떤 피드백을 원하시나요?</h3>
+    <div class="photo-card">
+      <img src="https://picsum.photos/900/500?random=1" />
+      <div class="tag">구도</div>
+      <div class="tag">빛</div>
+      <div class="views">👀 18</div>
+      <button onclick="alert('피드백 기능은 준비 중입니다')">
+        피드백 남기기
+      </button>
+    </div>
 
-  <label>
-    <input type="checkbox" /> 구도
-  </label><br />
+    <hr />
 
-  <label>
-    <input type="checkbox" /> 색감
-  </label><br />
+    <div class="photo-card">
+      <img src="https://picsum.photos/900/500?random=2" />
+      <div class="tag">색감</div>
+      <div class="tag">감정</div>
+      <div class="views">👀 42</div>
+      <button onclick="alert('피드백 기능은 준비 중입니다')">
+        피드백 남기기
+      </button>
+    </div>
+  </div>
 
-  <label>
-    <input type="checkbox" /> 분위기
-  </label><br />
+  <!-- 커뮤니티 -->
+  <div class="card">
+    <h2>💬 커뮤니티</h2>
 
-  <label>
-    <input type="checkbox" /> 스토리
-  </label><br /><br />
+    <div class="board-item">[질문] 사진 피드백 받을 때 어디까지 수정하나요?</div>
+    <div class="board-item">[자유] 오늘 찍은 거리 사진 공유합니다</div>
+    <div class="board-item">[팁] 색 대비 살리는 간단한 방법</div>
 
-  <button onclick="alert('피드백 요청이 전달되었습니다 (가짜)')"
-          style="padding:10px 16px;">
-    피드백 요청하기
-  </button>
-</section>
+    <br />
+    <button onclick="alert('글쓰기 기능은 준비 중입니다')">
+      글 쓰기
+    </button>
+  </div>
 
-  <h2>기능 (예정)</h2>
-  <ul>
-    <li>사진 업로드</li>
-    <li>봤어요 버튼</li>
-    <li>요소 선택 + 이유 작성</li>
-    <li>공개 / 비공개 피드백</li>
-  </ul>
-<div style="margin-top:20px;">
-  <button onclick="alert('준비중입니다')" style="padding:10px 16px; margin-right:10px;">
-    사진 올리고 피드백 받기
-  </button>
+  <!-- 소모임 -->
+  <div class="card meetup">
+    <h2>👥 소모임</h2>
+    <p><strong>서울 스트리트 사진 소모임</strong></p>
+    <p>지역: 서울 · 날짜: 3월 초 · 인원: 5명</p>
+    <button onclick="alert('참여 기능은 준비 중입니다')">
+      참여 요청
+    </button>
+  </div>
 
-  <button onclick="alert('준비중입니다')" style="padding:10px 16px;">
-    사진 자가점검 체크리스트
-  </button>
-</div>
-  
+</main>
+
+<footer>
+  <p>MVP 테스트 중 · 모든 기능은 단계적으로 추가됩니다</p>
+</footer>
+
 </body>
 </html>
