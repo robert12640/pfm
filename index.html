@@ -1,202 +1,144 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>사진 피드백 커뮤니티 MVP</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>snappo</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f4f4f4;
-      color: #222;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    header {
-      background: #111;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #fafafa;
+}
 
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+/* ===== 상단 바 ===== */
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: white;
+  border-bottom: 1px solid #eaeaea;
+}
 
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-      padding: 30px 0;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+}
 
-    h2 {
-      margin-top: 0;
-    }
+.logo span {
+  margin-left: 6px;
+}
 
-    .card {
-      background: #fff;
-      padding: 18px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-    }
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #111;
-      color: #fff;
-      cursor: pointer;
-    }
+/* 검색창 */
+.search-box {
+  height: 36px;
+  width: 240px;
+  background: #f1f1f1;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 14px;
+}
 
-    button:hover {
-      background: #333;
-    }
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+}
 
-    textarea, input[type="file"] {
-      width: 100%;
-    }
+/* 아이콘 버튼 */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 
-    .photo-card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
+/* ===== 사진 피드 ===== */
+.feed {
+  column-count: 2;
+  column-gap: 12px;
+  padding: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
 
-    .tag {
-      display: inline-block;
-      font-size: 12px;
-      background: #eee;
-      padding: 4px 8px;
-      border-radius: 6px;
-      margin-right: 4px;
-      margin-bottom: 4px;
-    }
+.photo-card {
+  background: white;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-    .views {
-      font-size: 14px;
-      margin: 6px 0;
-    }
+.photo-card img {
+  width: 100%;
+  display: block;
+}
 
-    .board-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
+.views {
+  padding: 8px 12px;
+  font-size: 14px;
+}
 
-    .meetup {
-      border-left: 4px solid #111;
-      padding-left: 14px;
-    }
-  </style>
-</head>
+/* ===== 오버레이 (사진 클릭 시) ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
 
-<body>
+.overlay-content {
+  background: white;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 16px;
+}
 
-<header>
-  <h1>사진 피드백 커뮤니티</h1>
-  <p>사진을 올리고, 시선을 나눕니다</p>
-</header>
+.feedback-options label {
+  display: block;
+  margin: 6px 0;
+}
 
-<main>
+textarea {
+  width: 100%;
+  margin-top: 10px;
+}
 
-  <!-- 사진 업로드 -->
-  <div class="card">
-    <h2>📸 사진 업로드</h2>
-    <p>사진을 올리고 어떤 피드백을 받고 싶은지 알려주세요.</p>
+button {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
 
-    <input type="file" accept="image/*" />
-    <br /><br />
-
-    <textarea rows="4"
-      placeholder="예: 색감 위주로 피드백 받고 싶어요"></textarea>
-
-    <br /><br />
-    <button onclick="alert('업로드 기능은 MVP 이후 연결됩니다')">
-      사진 업로드
-    </button>
-  </div>
-
-  <!-- 피드백 요청 -->
-  <div class="card">
-    <h2>📝 피드백 요청</h2>
-
-    <p>어떤 요소에 대한 피드백을 원하시나요?</p>
-
-    <label><input type="checkbox" /> 구도</label><br/>
-    <label><input type="checkbox" /> 색감</label><br/>
-    <label><input type="checkbox" /> 스토리</label><br/>
-    <label><input type="checkbox" /> 감정</label><br/><br/>
-
-    <textarea rows="3"
-      placeholder="질문이나 참고 사항을 적어주세요"></textarea>
-
-    <br /><br />
-    공개 여부:
-    <label><input type="radio" name="open" checked /> 공개</label>
-    <label><input type="radio" name="open" /> 비공개</label>
-  </div>
-
-  <!-- 사진 피드 -->
-  <div class="card">
-    <h2>🖼️ 사진 피드</h2>
-
-    <div class="photo-card">
-      <img src="https://picsum.photos/900/500?random=1" />
-      <div class="tag">구도</div>
-      <div class="tag">빛</div>
-      <div class="views">👀 18</div>
-      <button onclick="alert('피드백 기능은 준비 중입니다')">
-        피드백 남기기
-      </button>
-    </div>
-
-    <hr />
-
-    <div class="photo-card">
-      <img src="https://picsum.photos/900/500?random=2" />
-      <div class="tag">색감</div>
-      <div class="tag">감정</div>
-      <div class="views">👀 42</div>
-      <button onclick="alert('피드백 기능은 준비 중입니다')">
-        피드백 남기기
-      </button>
-    </div>
-  </div>
-
-  <!-- 커뮤니티 -->
-  <div class="card">
-    <h2>💬 커뮤니티</h2>
-
-    <div class="board-item">[질문] 사진 피드백 받을 때 어디까지 수정하나요?</div>
-    <div class="board-item">[자유] 오늘 찍은 거리 사진 공유합니다</div>
-    <div class="board-item">[팁] 색 대비 살리는 간단한 방법</div>
-
-    <br />
-    <button onclick="alert('글쓰기 기능은 준비 중입니다')">
-      글 쓰기
-    </button>
-  </div>
-
-  <!-- 소모임 -->
-  <div class="card meetup">
-    <h2>👥 소모임</h2>
-    <p><strong>서울 스트리트 사진 소모임</strong></p>
-    <p>지역: 서울 · 날짜: 3월 초 · 인원: 5명</p>
-    <button onclick="alert('참여 기능은 준비 중입니다')">
-      참여 요청
-    </button>
-  </div>
-
-</main>
-
-<footer>
-  <p>MVP 테스트 중 · 모든 기능은 단계적으로 추가됩니다</p>
-</footer>
-
-</body>
-</html>
+/* ===== 커뮤니티 패널 ===== */
+.communi
