@@ -24,30 +24,9 @@ body {
   border-bottom: 1px solid #eaeaea;
 }
 
-.logo { font-weight: 600; font-size: 18px; }
-
-.topbar-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.search-box {
-  height: 36px;
-  width: 220px;
-  background: #f1f1f1;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-}
-
-.search-box input {
-  border: none;
-  background: transparent;
-  outline: none;
-  flex: 1;
+.logo {
+  font-weight: 600;
+  font-size: 18px;
 }
 
 /* ===== 피드 ===== */
@@ -81,3 +60,161 @@ body {
 .photo-meta {
   display: flex;
   align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  padding: 6px 4px;
+}
+
+/* ===== 오버레이 ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-content {
+  background: white;
+  width: 90%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+/* 평가 버튼 */
+.rating-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rating-options button {
+  border: none;
+  background: #f1f1f1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.rating-options button.active {
+  background: #111;
+  color: white;
+}
+
+/* 댓글 */
+.comment-box textarea {
+  width: 100%;
+  resize: none;
+  padding: 8px;
+}
+
+.comment {
+  background: #f6f6f6;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.action-btn {
+  margin-top: 8px;
+  background: #111;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 상단바 -->
+<div class="topbar">
+  <div class="logo">snappo</div>
+</div>
+
+<!-- 피드 -->
+<div class="feed">
+  <div class="photo-card" onclick="openOverlay()">
+    <div class="photo-box">
+      <img src="https://picsum.photos/400/600" alt="photo">
+    </div>
+    <div class="photo-meta">👀 <span>123</span></div>
+  </div>
+
+  <div class="photo-card" onclick="openOverlay()">
+    <div class="photo-box">
+      <img src="https://picsum.photos/400/520" alt="photo">
+    </div>
+    <div class="photo-meta">👀 <span>87</span></div>
+  </div>
+</div>
+
+<!-- 오버레이 -->
+<div class="overlay" id="overlay">
+  <div class="overlay-content">
+
+    <h3>사진 평가</h3>
+
+    <div class="rating-options">
+      <button onclick="selectCategory(this,'구도')">구도</button>
+      <button onclick="selectCategory(this,'빛과 음영')">빛과 음영</button>
+      <button onclick="selectCategory(this,'색감')">색감</button>
+      <button onclick="selectCategory(this,'스토리')">스토리</button>
+    </div>
+
+    <div class="comment-box">
+      <textarea id="commentInput" rows="2" placeholder="평가 요소를 선택하세요"></textarea>
+      <button class="action-btn" onclick="addComment()">등록</button>
+    </div>
+
+    <div id="commentList"></div>
+
+    <button class="action-btn" onclick="closeOverlay()">닫기</button>
+  </div>
+</div>
+
+<script>
+let currentCategory = '';
+
+function openOverlay() {
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').style.display = 'none';
+}
+
+function selectCategory(btn, category) {
+  document.querySelectorAll('.rating-options button')
+    .forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  currentCategory = category;
+  document.getElementById('commentInput').placeholder =
+    category + '에 대한 짧은 평가를 남겨주세요';
+}
+
+function addComment() {
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+
+  if (!text || !currentCategory) return;
+
+  const div = document.createElement('div');
+  div.className = 'comment';
+  div.innerHTML = `<strong>${currentCategory}</strong> · ${text}`;
+
+  document.getElementById('commentList').prepend(div);
+  input.value = '';
+}
+</script>
+
+</body>
+</html>
