@@ -29,6 +29,45 @@ body {
   font-size: 18px;
 }
 
+/* 오른쪽 영역 */
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 검색창 */
+.search-box {
+  height: 36px;
+  width: 220px;
+  background: #f1f1f1;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+}
+
+/* 아이콘 버튼 */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 /* ===== 피드 ===== */
 .feed {
   column-count: 2;
@@ -90,6 +129,7 @@ body {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .rating-options button {
@@ -137,6 +177,14 @@ body {
 <!-- 상단바 -->
 <div class="topbar">
   <div class="logo">snappo</div>
+
+  <div class="topbar-right">
+    <div class="search-box">
+      <input placeholder="사진 검색" />
+    </div>
+    <div class="icon-btn">👤</div>
+    <div class="icon-btn">💬</div>
+  </div>
 </div>
 
 <!-- 피드 -->
@@ -156,7 +204,7 @@ body {
   </div>
 </div>
 
-<!-- 오버레이 -->
+<!-- 평가 오버레이 -->
 <div class="overlay" id="overlay">
   <div class="overlay-content">
 
