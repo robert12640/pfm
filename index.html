@@ -34,7 +34,6 @@ body {
   font-size: 22px;
 }
 
-/* 오른쪽 상단 */
 .topbar-right {
   margin-left: auto;
   display: flex;
@@ -71,18 +70,17 @@ body {
   font-size: 18px;
 }
 
-/* ===== 피드 ===== */
+/* ===== 피드 (여기만 변경 핵심) ===== */
 .feed {
-  column-count: 2;
-  column-gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 가로 2개 고정 */
+  gap: 12px;
   padding: 16px;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .photo-card {
-  margin-bottom: 16px;
-  break-inside: avoid;
   cursor: pointer;
 }
 
@@ -201,7 +199,6 @@ body {
 
 <!-- 상단바 -->
 <div class="topbar">
-  <!-- 👤 → 👀 로 교체 -->
   <div class="left-icons">👀</div>
   <div class="logo">snappo</div>
 
@@ -210,7 +207,6 @@ body {
       <input placeholder="사진 검색" />
     </div>
     <div class="icon-btn" onclick="openCommunity()">💬</div>
-    <!-- 오른쪽 👀 제거 -->
   </div>
 </div>
 
@@ -218,9 +214,16 @@ body {
 <div class="feed">
   <div class="photo-card" onclick="openReview()">
     <div class="photo-box">
-      <img src="https://picsum.photos/400/600">
+      <img src="https://picsum.photos/400/600?1">
     </div>
     <div class="photo-meta">👀 <span>123</span></div>
+  </div>
+
+  <div class="photo-card" onclick="openReview()">
+    <div class="photo-box">
+      <img src="https://picsum.photos/400/500?2">
+    </div>
+    <div class="photo-meta">👀 <span>98</span></div>
   </div>
 </div>
 
