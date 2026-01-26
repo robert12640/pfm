@@ -26,46 +26,30 @@ body {
 
 .logo {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 22px;
 }
 
-/* 오른쪽 영역 */
-.topbar-right {
+/* 오른쪽 끝 👀 */
+.topbar-eye {
   margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 22px;
 }
 
-/* 검색창 */
-.search-box {
-  height: 36px;
-  width: 220px;
-  background: #f1f1f1;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  font-size: 14px;
-}
-
-.search-box input {
-  border: none;
-  background: transparent;
-  outline: none;
-  flex: 1;
-}
-
-/* 아이콘 버튼 */
-.icon-btn {
-  width: 36px;
-  height: 36px;
+/* ===== 커뮤니티 버튼 ===== */
+.community-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: #f1f1f1;
+  background: #111;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  font-size: 22px;
 }
 
 /* ===== 피드 ===== */
@@ -79,11 +63,12 @@ body {
 
 /* 사진 카드 */
 .photo-card {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  break-inside: avoid;
   cursor: pointer;
 }
 
-/* 사진 컨테이너 */
+/* 사진 박스 */
 .photo-box {
   background: white;
   border-radius: 14px;
@@ -95,7 +80,7 @@ body {
   display: block;
 }
 
-/* 👀 조회수 */
+/* 사진 하단 메타 */
 .photo-meta {
   display: flex;
   align-items: center;
@@ -104,7 +89,7 @@ body {
   padding: 6px 4px;
 }
 
-/* ===== 오버레이 ===== */
+/* ===== 평가 오버레이 ===== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -169,6 +154,34 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
+
+/* ===== 커뮤니티 오버레이 ===== */
+.community-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.community-box {
+  background: white;
+  width: 90%;
+  max-width: 360px;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.community-item {
+  padding: 14px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.community-item:hover {
+  background: #f1f1f1;
+}
 </style>
 </head>
 
@@ -177,37 +190,29 @@ body {
 <!-- 상단바 -->
 <div class="topbar">
   <div class="logo">snappo</div>
-
-  <div class="topbar-right">
-    <div class="search-box">
-      <input placeholder="사진 검색" />
-    </div>
-    <div class="icon-btn">👤</div>
-    <div class="icon-btn">💬</div>
-  </div>
+  <div class="topbar-eye">👀</div>
 </div>
 
 <!-- 피드 -->
 <div class="feed">
-  <div class="photo-card" onclick="openOverlay()">
+  <div class="photo-card" onclick="openReview()">
     <div class="photo-box">
-      <img src="https://picsum.photos/400/600" alt="photo">
+      <img src="https://picsum.photos/400/600">
     </div>
     <div class="photo-meta">👀 <span>123</span></div>
   </div>
 
-  <div class="photo-card" onclick="openOverlay()">
+  <div class="photo-card" onclick="openReview()">
     <div class="photo-box">
-      <img src="https://picsum.photos/400/520" alt="photo">
+      <img src="https://picsum.photos/400/520">
     </div>
     <div class="photo-meta">👀 <span>87</span></div>
   </div>
 </div>
 
 <!-- 평가 오버레이 -->
-<div class="overlay" id="overlay">
+<div class="overlay" id="reviewOverlay">
   <div class="overlay-content">
-
     <h3>사진 평가</h3>
 
     <div class="rating-options">
@@ -223,46 +228,11 @@ body {
     </div>
 
     <div id="commentList"></div>
-
-    <button class="action-btn" onclick="closeOverlay()">닫기</button>
+    <button class="action-btn" onclick="closeReview()">닫기</button>
   </div>
 </div>
 
-<script>
-let currentCategory = '';
+<!-- 커뮤니티 -->
+<div class="community-btn" onclick="openCommunity()">💬</div>
 
-function openOverlay() {
-  document.getElementById('overlay').style.display = 'flex';
-}
-
-function closeOverlay() {
-  document.getElementById('overlay').style.display = 'none';
-}
-
-function selectCategory(btn, category) {
-  document.querySelectorAll('.rating-options button')
-    .forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  currentCategory = category;
-  document.getElementById('commentInput').placeholder =
-    category + '에 대한 짧은 평가를 남겨주세요';
-}
-
-function addComment() {
-  const input = document.getElementById('commentInput');
-  const text = input.value.trim();
-
-  if (!text || !currentCategory) return;
-
-  const div = document.createElement('div');
-  div.className = 'comment';
-  div.innerHTML = `<strong>${currentCategory}</strong> · ${text}`;
-
-  document.getElementById('commentList').prepend(div);
-  input.value = '';
-}
-</script>
-
-</body>
-</html>
+<
