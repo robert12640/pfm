@@ -7,14 +7,13 @@
 
 <style>
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #fafafa;
 }
 
-/* ===== 상단 바 ===== */
+/* ===== 상단 ===== */
 .topbar {
   height: 56px;
   display: flex;
@@ -24,15 +23,8 @@ body {
   border-bottom: 1px solid #eaeaea;
 }
 
-.left-icons {
-  margin-right: 8px;
-  font-size: 20px;
-}
-
-.logo {
-  font-weight: 600;
-  font-size: 22px;
-}
+.left-icons { font-size: 20px; margin-right: 8px; }
+.logo { font-size: 22px; font-weight: 600; }
 
 .topbar-right {
   margin-left: auto;
@@ -50,7 +42,6 @@ body {
   align-items: center;
   padding: 0 12px;
 }
-
 .search-box input {
   border: none;
   background: transparent;
@@ -67,21 +58,16 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 18px;
 }
 
-/* ===== 피드 (여기만 변경 핵심) ===== */
+/* ===== 피드 ===== */
 .feed {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 가로 2개 고정 */
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 16px;
   max-width: 900px;
   margin: 0 auto;
-}
-
-.photo-card {
-  cursor: pointer;
 }
 
 .photo-box {
@@ -89,7 +75,6 @@ body {
   border-radius: 14px;
   overflow: hidden;
 }
-
 .photo-box img {
   width: 100%;
   display: block;
@@ -112,7 +97,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .overlay-content {
   background: white;
   width: 90%;
@@ -123,13 +107,12 @@ body {
   padding: 16px;
 }
 
-/* ===== 평가 ===== */
+/* 평가 */
 .rating-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .rating-item {
   display: flex;
   justify-content: space-between;
@@ -138,24 +121,18 @@ body {
   background: #f1f1f1;
   cursor: pointer;
 }
-
 .rating-item.active {
   background: #111;
   color: white;
 }
 
-.review-input {
-  margin-top: 8px;
-}
-
 .review-input textarea {
   width: 100%;
-  resize: none;
-  padding: 8px;
   margin-top: 6px;
+  resize: none;
 }
 
-/* ===== 커뮤니티 ===== */
+/* 커뮤니티 */
 .community-overlay {
   position: fixed;
   inset: 0;
@@ -164,7 +141,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .community-box {
   background: white;
   width: 90%;
@@ -172,32 +148,20 @@ body {
   border-radius: 16px;
   padding: 16px;
 }
-
 .community-item {
   padding: 14px 10px;
   border-radius: 10px;
   cursor: pointer;
 }
-
 .community-item:hover {
   background: #f1f1f1;
-}
-
-.action-btn {
-  margin-top: 12px;
-  background: #111;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 상단바 -->
+<!-- 상단 -->
 <div class="topbar">
   <div class="left-icons">👀</div>
   <div class="logo">snappo</div>
@@ -211,21 +175,7 @@ body {
 </div>
 
 <!-- 피드 -->
-<div class="feed">
-  <div class="photo-card" onclick="openReview()">
-    <div class="photo-box">
-      <img src="https://picsum.photos/400/600?1">
-    </div>
-    <div class="photo-meta">👀 <span>123</span></div>
-  </div>
-
-  <div class="photo-card" onclick="openReview()">
-    <div class="photo-box">
-      <img src="https://picsum.photos/400/500?2">
-    </div>
-    <div class="photo-meta">👀 <span>98</span></div>
-  </div>
-</div>
+<div class="feed" id="feed"></div>
 
 <!-- 평가 오버레이 -->
 <div class="overlay" id="reviewOverlay">
@@ -233,23 +183,14 @@ body {
     <h3>사진 평가</h3>
 
     <div class="rating-list">
-      <div class="rating-item" onclick="toggleRating(this,'🎬 구도와 초점')">
-        구도와 초점 <span>🎬</span>
-      </div>
-      <div class="rating-item" onclick="toggleRating(this,'🌘 빛과 음영')">
-        빛과 음영 <span>🌘</span>
-      </div>
-      <div class="rating-item" onclick="toggleRating(this,'🎨 색감')">
-        색감 <span>🎨</span>
-      </div>
-      <div class="rating-item" onclick="toggleRating(this,'📚 스토리')">
-        스토리 <span>📚</span>
-      </div>
+      <div class="rating-item" onclick="toggleRating(this,'🎬 구도와 초점')">구도와 초점 <span>🎬</span></div>
+      <div class="rating-item" onclick="toggleRating(this,'🌘 빛과 음영')">빛과 음영 <span>🌘</span></div>
+      <div class="rating-item" onclick="toggleRating(this,'🎨 색감')">색감 <span>🎨</span></div>
+      <div class="rating-item" onclick="toggleRating(this,'📚 스토리')">스토리 <span>📚</span></div>
     </div>
 
     <div id="reviewInputs"></div>
-
-    <button class="action-btn" onclick="closeReview()">닫기</button>
+    <button onclick="closeReview()">닫기</button>
   </div>
 </div>
 
@@ -260,48 +201,64 @@ body {
     <div class="community-item">자유게시판</div>
     <div class="community-item">질문게시판</div>
     <div class="community-item">소모임 게시판</div>
-    <button class="action-btn" onclick="closeCommunity()">닫기</button>
+    <button onclick="closeCommunity()">닫기</button>
   </div>
 </div>
 
 <script>
+/* ===== 사진 데이터 (예시) ===== */
+const photos = [
+  { id:1, src:'https://picsum.photos/400/600?1', views:120, reviews:3, time:Date.now()-100000 },
+  { id:2, src:'https://picsum.photos/400/500?2', views:40, reviews:1, time:Date.now()-50000 },
+  { id:3, src:'https://picsum.photos/400/550?3', views:200, reviews:6, time:Date.now()-200000 }
+];
+
+/* ===== 기본 정렬 ===== */
+function score(p){
+  return (p.time / 100000) + (p.views * 0.3) + (p.reviews * 0.5);
+}
+
+photos.sort((a,b)=> score(b) - score(a));
+
+const feed = document.getElementById('feed');
+
+photos.forEach(p=>{
+  const card = document.createElement('div');
+  card.onclick = openReview;
+  card.innerHTML = `
+    <div class="photo-box">
+      <img src="${p.src}">
+    </div>
+    <div class="photo-meta">👀 ${p.views}</div>
+  `;
+  feed.appendChild(card);
+});
+
+/* ===== 평가 ===== */
 const selected = new Set();
+function openReview(){ document.getElementById('reviewOverlay').style.display='flex'; }
+function closeReview(){ document.getElementById('reviewOverlay').style.display='none'; }
 
-function openReview() {
-  document.getElementById('reviewOverlay').style.display = 'flex';
-}
-
-function closeReview() {
-  document.getElementById('reviewOverlay').style.display = 'none';
-}
-
-function toggleRating(el, key) {
+function toggleRating(el,key){
   const box = document.getElementById('reviewInputs');
-
-  if (selected.has(key)) {
+  if(selected.has(key)){
     selected.delete(key);
     el.classList.remove('active');
     document.getElementById(key)?.remove();
   } else {
-    if (selected.size >= 4) return;
+    if(selected.size>=4) return;
     selected.add(key);
     el.classList.add('active');
-
-    const div = document.createElement('div');
-    div.className = 'review-input';
-    div.id = key;
-    div.innerHTML = `<strong>${key}</strong><textarea rows="2"></textarea>`;
+    const div=document.createElement('div');
+    div.id=key;
+    div.innerHTML=`<strong>${key}</strong><textarea rows="2"></textarea>`;
     box.appendChild(div);
   }
 }
 
-function openCommunity() {
-  document.getElementById('communityOverlay').style.display = 'flex';
-}
-
-function closeCommunity() {
-  document.getElementById('communityOverlay').style.display = 'none';
-}
+/* ===== 커뮤니티 ===== */
+function openCommunity(){ document.getElementById('communityOverlay').style.display='flex'; }
+function closeCommunity(){ document.getElementById('communityOverlay').style.display='none'; }
 </script>
 
 </body>
