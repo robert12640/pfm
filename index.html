@@ -24,32 +24,51 @@ body {
   border-bottom: 1px solid #eaeaea;
 }
 
+.left-icons {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
 .logo {
   font-weight: 600;
   font-size: 22px;
 }
 
-/* 오른쪽 끝 👀 */
-.topbar-eye {
+/* 오른쪽 상단 */
+.topbar-right {
   margin-left: auto;
-  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* ===== 커뮤니티 버튼 ===== */
-.community-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
+.search-box {
+  height: 36px;
+  width: 220px;
+  background: #f1f1f1;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #111;
-  color: white;
+  background: #f1f1f1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 /* ===== 피드 ===== */
@@ -61,14 +80,12 @@ body {
   margin: 0 auto;
 }
 
-/* 사진 카드 */
 .photo-card {
   margin-bottom: 16px;
   break-inside: avoid;
   cursor: pointer;
 }
 
-/* 사진 박스 */
 .photo-box {
   background: white;
   border-radius: 14px;
@@ -80,7 +97,6 @@ body {
   display: block;
 }
 
-/* 사진 하단 메타 */
 .photo-meta {
   display: flex;
   align-items: center;
@@ -89,7 +105,7 @@ body {
   padding: 6px 4px;
 }
 
-/* ===== 평가 오버레이 ===== */
+/* ===== 오버레이 공통 ===== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -109,53 +125,40 @@ body {
   padding: 16px;
 }
 
-/* 평가 버튼 */
-.rating-options {
+/* ===== 평가 요소 ===== */
+.rating-list {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.rating-options button {
-  border: none;
+.rating-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
   background: #f1f1f1;
-  padding: 8px 12px;
-  border-radius: 999px;
   cursor: pointer;
 }
 
-.rating-options button.active {
+.rating-item.active {
   background: #111;
   color: white;
 }
 
-/* 댓글 */
-.comment-box textarea {
+/* 입력 박스 */
+.review-input {
+  margin-top: 8px;
+}
+
+.review-input textarea {
   width: 100%;
   resize: none;
   padding: 8px;
-}
-
-.comment {
-  background: #f6f6f6;
-  padding: 8px 10px;
-  border-radius: 8px;
   margin-top: 6px;
-  font-size: 14px;
 }
 
-.action-btn {
-  margin-top: 8px;
-  background: #111;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* ===== 커뮤니티 오버레이 ===== */
+/* ===== 커뮤니티 ===== */
 .community-overlay {
   position: fixed;
   inset: 0;
@@ -182,6 +185,16 @@ body {
 .community-item:hover {
   background: #f1f1f1;
 }
+
+.action-btn {
+  margin-top: 12px;
+  background: #111;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -189,8 +202,16 @@ body {
 
 <!-- 상단바 -->
 <div class="topbar">
+  <div class="left-icons">👤</div>
   <div class="logo">snappo</div>
-  <div class="topbar-eye">👀</div>
+
+  <div class="topbar-right">
+    <div class="search-box">
+      <input placeholder="사진 검색" />
+    </div>
+    <div class="icon-btn" onclick="openCommunity()">💬</div>
+    <div class="icon-btn">👀</div>
+  </div>
 </div>
 
 <!-- 피드 -->
@@ -201,13 +222,6 @@ body {
     </div>
     <div class="photo-meta">👀 <span>123</span></div>
   </div>
-
-  <div class="photo-card" onclick="openReview()">
-    <div class="photo-box">
-      <img src="https://picsum.photos/400/520">
-    </div>
-    <div class="photo-meta">👀 <span>87</span></div>
-  </div>
 </div>
 
 <!-- 평가 오버레이 -->
@@ -215,24 +229,77 @@ body {
   <div class="overlay-content">
     <h3>사진 평가</h3>
 
-    <div class="rating-options">
-      <button onclick="selectCategory(this,'구도')">구도</button>
-      <button onclick="selectCategory(this,'빛과 음영')">빛과 음영</button>
-      <button onclick="selectCategory(this,'색감')">색감</button>
-      <button onclick="selectCategory(this,'스토리')">스토리</button>
+    <div class="rating-list">
+      <div class="rating-item" onclick="toggleRating(this,'🎬 구도와 초점')">
+        구도와 초점 <span>🎬</span>
+      </div>
+      <div class="rating-item" onclick="toggleRating(this,'🌘 빛과 음영')">
+        빛과 음영 <span>🌘</span>
+      </div>
+      <div class="rating-item" onclick="toggleRating(this,'🎨 색감')">
+        색감 <span>🎨</span>
+      </div>
+      <div class="rating-item" onclick="toggleRating(this,'📚 스토리')">
+        스토리 <span>📚</span>
+      </div>
     </div>
 
-    <div class="comment-box">
-      <textarea id="commentInput" rows="2" placeholder="평가 요소를 선택하세요"></textarea>
-      <button class="action-btn" onclick="addComment()">등록</button>
-    </div>
+    <div id="reviewInputs"></div>
 
-    <div id="commentList"></div>
     <button class="action-btn" onclick="closeReview()">닫기</button>
   </div>
 </div>
 
 <!-- 커뮤니티 -->
-<div class="community-btn" onclick="openCommunity()">💬</div>
+<div class="community-overlay" id="communityOverlay">
+  <div class="community-box">
+    <h3>커뮤니티</h3>
+    <div class="community-item">자유게시판</div>
+    <div class="community-item">질문게시판</div>
+    <div class="community-item">소모임 게시판</div>
+    <button class="action-btn" onclick="closeCommunity()">닫기</button>
+  </div>
+</div>
 
-<
+<script>
+const selected = new Set();
+
+function openReview() {
+  document.getElementById('reviewOverlay').style.display = 'flex';
+}
+
+function closeReview() {
+  document.getElementById('reviewOverlay').style.display = 'none';
+}
+
+function toggleRating(el, key) {
+  const box = document.getElementById('reviewInputs');
+
+  if (selected.has(key)) {
+    selected.delete(key);
+    el.classList.remove('active');
+    document.getElementById(key)?.remove();
+  } else {
+    if (selected.size >= 4) return;
+    selected.add(key);
+    el.classList.add('active');
+
+    const div = document.createElement('div');
+    div.className = 'review-input';
+    div.id = key;
+    div.innerHTML = `<strong>${key}</strong><textarea rows="2"></textarea>`;
+    box.appendChild(div);
+  }
+}
+
+function openCommunity() {
+  document.getElementById('communityOverlay').style.display = 'flex';
+}
+
+function closeCommunity() {
+  document.getElementById('communityOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
