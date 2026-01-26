@@ -105,7 +105,7 @@ body {
   padding: 6px 4px;
 }
 
-/* ===== 오버레이 공통 ===== */
+/* ===== 오버레이 ===== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -125,7 +125,7 @@ body {
   padding: 16px;
 }
 
-/* ===== 평가 요소 ===== */
+/* ===== 평가 ===== */
 .rating-list {
   display: flex;
   flex-direction: column;
@@ -146,7 +146,6 @@ body {
   color: white;
 }
 
-/* 입력 박스 */
 .review-input {
   margin-top: 8px;
 }
@@ -202,7 +201,8 @@ body {
 
 <!-- 상단바 -->
 <div class="topbar">
-  <div class="left-icons">👤</div>
+  <!-- 👤 → 👀 로 교체 -->
+  <div class="left-icons">👀</div>
   <div class="logo">snappo</div>
 
   <div class="topbar-right">
@@ -210,7 +210,7 @@ body {
       <input placeholder="사진 검색" />
     </div>
     <div class="icon-btn" onclick="openCommunity()">💬</div>
-    <div class="icon-btn">👀</div>
+    <!-- 오른쪽 👀 제거 -->
   </div>
 </div>
 
