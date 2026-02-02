@@ -74,7 +74,7 @@ body {
   cursor: pointer;
 }
 
-/* ===== 👀 정렬 드롭다운 ===== */
+/* ===== 👀 정렬 메뉴 ===== */
 .sort-menu {
   position: absolute;
   top: 56px;
@@ -84,7 +84,6 @@ body {
   border-radius: 12px;
   display: none;
   flex-direction: column;
-  overflow: hidden;
   min-width: 180px;
   z-index: 10;
 }
@@ -109,7 +108,6 @@ body {
   border-radius: 12px;
   display: none;
   flex-direction: column;
-  overflow: hidden;
   z-index: 10;
 }
 
@@ -156,12 +154,10 @@ body {
   display: block;
 }
 
-/* 메타 */
 .photo-meta {
   font-size: 14px;
   padding: 8px 10px;
   background: white;
-  color: #333;
 }
 
 /* ===== 오버레이 ===== */
@@ -189,30 +185,20 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .rating-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 10px 12px;
-  border-radius: 10px;
   background: #f4f4f4;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .rating-item.active {
   background: #eaeaea;
   font-weight: 600;
-}
-
-.comment-box textarea {
-  width: 100%;
-  min-height: 60px;
-  margin-top: 6px;
-  padding: 8px;
-  font-size: 14px;
 }
 </style>
 </head>
@@ -231,17 +217,15 @@ body {
     <div class="icon-btn" onclick="toggleCommunity()">💬</div>
   </div>
 
-  <!-- 정렬 메뉴 -->
   <div class="sort-menu" id="sortMenu">
-    <div>👀 관심순</div>
-    <div>🆕 최신순</div>
-    <div>🎬 구도 위주</div>
-    <div>🌘 빛과 음영 위주</div>
-    <div>🎨 색감 위주</div>
-    <div>📚 스토리 위주</div>
+    <div onclick="setSort('views')">👀 관심순</div>
+    <div onclick="setSort('latest')">🆕 최신순</div>
+    <div onclick="setSort('composition')">🎬 구도 위주</div>
+    <div onclick="setSort('light')">🌘 빛과 음영 위주</div>
+    <div onclick="setSort('color')">🎨 색감 위주</div>
+    <div onclick="setSort('story')">📚 스토리 위주</div>
   </div>
 
-  <!-- 커뮤니티 -->
   <div class="community-menu" id="communityMenu">
     <div>자유게시판</div>
     <div>질문게시판</div>
@@ -249,43 +233,88 @@ body {
   </div>
 </div>
 
-<div class="feed-title">👀 관심이 모이고 있는 사진</div>
+<div class="feed-title" id="feedTitle">👀 관심이 모이고 있는 사진</div>
 
-<!-- 피드 -->
-<div class="feed">
-  <div class="photo-card" onclick="openOverlay()">
-    <div class="photo-box">
-      <img src="https://picsum.photos/400/600">
-    </div>
-    <div class="photo-meta">👀 128 · 🎬 12 🌘 8</div>
-  </div>
+<div class="feed" id="feed"></div>
 
-  <div class="photo-card" onclick="openOverlay()">
-    <div class="photo-box">
-      <img src="https://picsum.photos/400/500">
-    </div>
-    <div class="photo-meta">👀 96 · 🎨 7 📚 4</div>
-  </div>
-</div>
-
-<!-- 오버레이 -->
 <div class="overlay" id="overlay">
   <div class="overlay-content">
     <h3>사진 평가</h3>
-
     <div class="rating-list">
-      <div class="rating-item" onclick="toggleRate(this)">구도와 초점 <span>🎬</span></div>
-      <div class="rating-item" onclick="toggleRate(this)">빛과 음영 <span>🌘</span></div>
-      <div class="rating-item" onclick="toggleRate(this)">색감 <span>🎨</span></div>
-      <div class="rating-item" onclick="toggleRate(this)">스토리 <span>📚</span></div>
+      <div class="rating-item">구도와 초점 <span>🎬</span></div>
+      <div class="rating-item">빛과 음영 <span>🌘</span></div>
+      <div class="rating-item">색감 <span>🎨</span></div>
+      <div class="rating-item">스토리 <span>📚</span></div>
     </div>
-
-    <div class="comment-box" id="commentBox"></div>
     <button onclick="closeOverlay()">닫기</button>
   </div>
 </div>
 
 <script>
+const photos = [
+  {
+    img: 'https://picsum.photos/400/600',
+    views: 128,
+    composition: 12,
+    light: 8,
+    color: 6,
+    story: 3,
+    createdAt: 3
+  },
+  {
+    img: 'https://picsum.photos/400/500',
+    views: 96,
+    composition: 5,
+    light: 14,
+    color: 9,
+    story: 7,
+    createdAt: 1
+  },
+  {
+    img: 'https://picsum.photos/400/550',
+    views: 180,
+    composition: 20,
+    light: 4,
+    color: 3,
+    story: 2,
+    createdAt: 2
+  }
+];
+
+let currentSort = 'views';
+
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+
+  photos.forEach(p => {
+    feed.innerHTML += `
+      <div class="photo-card" onclick="openOverlay()">
+        <div class="photo-box">
+          <img src="${p.img}">
+        </div>
+        <div class="photo-meta">
+          👀 ${p.views} · 🎬 ${p.composition} 🌘 ${p.light}
+        </div>
+      </div>
+    `;
+  });
+}
+
+function setSort(type) {
+  currentSort = type;
+  document.getElementById('sortMenu').style.display = 'none';
+
+  if (type === 'latest') {
+    photos.sort((a, b) => b.createdAt - a.createdAt);
+  } else {
+    photos.sort((a, b) => b[type] - a[type]);
+  }
+
+  document.getElementById('feedTitle').innerText = `👀 ${type} 기준으로 보는 사진`;
+  renderFeed();
+}
+
 function toggleSort() {
   const m = document.getElementById('sortMenu');
   m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
@@ -304,9 +333,7 @@ function closeOverlay() {
   document.getElementById('overlay').style.display = 'none';
 }
 
-function toggleRate(el) {
-  el.classList.toggle('active');
-}
+renderFeed();
 </script>
 
 </body>
