@@ -22,7 +22,6 @@ body {
   background: white;
   border-bottom: 1px solid #eaeaea;
 }
-
 .left-icons { font-size: 20px; margin-right: 8px; }
 .logo { font-size: 22px; font-weight: 600; }
 
@@ -32,7 +31,6 @@ body {
   align-items: center;
   gap: 10px;
 }
-
 .search-box {
   height: 36px;
   width: 220px;
@@ -48,7 +46,6 @@ body {
   outline: none;
   flex: 1;
 }
-
 .icon-btn {
   width: 36px;
   height: 36px;
@@ -64,11 +61,13 @@ body {
 .feed {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
   padding: 16px;
   max-width: 900px;
   margin: 0 auto;
 }
+
+.photo-card { cursor: pointer; }
 
 .photo-box {
   background: white;
@@ -81,11 +80,23 @@ body {
 }
 
 .photo-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-size: 14px;
   padding: 6px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badges {
+  font-size: 13px;
+  color: #555;
+}
+
+/* CTA */
+.cta {
+  font-size: 13px;
+  color: #111;
+  font-weight: 500;
 }
 
 /* ===== 오버레이 ===== */
@@ -107,11 +118,12 @@ body {
   padding: 16px;
 }
 
-/* 평가 */
+/* ===== 평가 ===== */
 .rating-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 10px;
 }
 .rating-item {
   display: flex;
@@ -132,7 +144,17 @@ body {
   resize: none;
 }
 
-/* 커뮤니티 */
+/* 평가 댓글 */
+.review-list {
+  margin-top: 20px;
+}
+.review {
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* ===== 커뮤니티 ===== */
 .community-overlay {
   position: fixed;
   inset: 0;
@@ -190,6 +212,13 @@ body {
     </div>
 
     <div id="reviewInputs"></div>
+
+    <h4>다른 사람들의 평가</h4>
+    <div class="review-list" id="reviewList">
+      <div class="review">🎬 구도가 안정적이에요</div>
+      <div class="review">🎨 색 대비가 좋아요</div>
+    </div>
+
     <button onclick="closeReview()">닫기</button>
   </div>
 </div>
@@ -206,35 +235,47 @@ body {
 </div>
 
 <script>
-/* ===== 사진 데이터 (예시) ===== */
+/* ===== 데이터 ===== */
 const photos = [
-  { id:1, src:'https://picsum.photos/400/600?1', views:120, reviews:3, time:Date.now()-100000 },
-  { id:2, src:'https://picsum.photos/400/500?2', views:40, reviews:1, time:Date.now()-50000 },
-  { id:3, src:'https://picsum.photos/400/550?3', views:200, reviews:6, time:Date.now()-200000 }
+  {
+    src: 'https://picsum.photos/400/600?1',
+    views: 120,
+    reviews: 3,
+    time: Date.now() - 100000,
+    summary: '🎬 구도 2 · 🎨 색감 1'
+  },
+  {
+    src: 'https://picsum.photos/400/500?2',
+    views: 40,
+    reviews: 1,
+    time: Date.now() - 50000,
+    summary: '🌘 빛과 음영 1'
+  }
 ];
 
-/* ===== 기본 정렬 ===== */
-function score(p){
+/* 정렬 */
+function score(p) {
   return (p.time / 100000) + (p.views * 0.3) + (p.reviews * 0.5);
 }
-
-photos.sort((a,b)=> score(b) - score(a));
+photos.sort((a,b)=>score(b)-score(a));
 
 const feed = document.getElementById('feed');
-
 photos.forEach(p=>{
   const card = document.createElement('div');
+  card.className = 'photo-card';
   card.onclick = openReview;
   card.innerHTML = `
-    <div class="photo-box">
-      <img src="${p.src}">
+    <div class="photo-box"><img src="${p.src}"></div>
+    <div class="photo-meta">
+      <div>👀 ${p.views}</div>
+      <div class="badges">${p.summary}</div>
     </div>
-    <div class="photo-meta">👀 ${p.views}</div>
+    <div class="cta">이 사진 평가하기 →</div>
   `;
   feed.appendChild(card);
 });
 
-/* ===== 평가 ===== */
+/* 평가 */
 const selected = new Set();
 function openReview(){ document.getElementById('reviewOverlay').style.display='flex'; }
 function closeReview(){ document.getElementById('reviewOverlay').style.display='none'; }
@@ -246,17 +287,18 @@ function toggleRating(el,key){
     el.classList.remove('active');
     document.getElementById(key)?.remove();
   } else {
-    if(selected.size>=4) return;
+    if(selected.size >= 4) return;
     selected.add(key);
     el.classList.add('active');
-    const div=document.createElement('div');
-    div.id=key;
-    div.innerHTML=`<strong>${key}</strong><textarea rows="2"></textarea>`;
+    const div = document.createElement('div');
+    div.id = key;
+    div.className = 'review-input';
+    div.innerHTML = `<strong>${key}</strong><textarea rows="2"></textarea>`;
     box.appendChild(div);
   }
 }
 
-/* ===== 커뮤니티 ===== */
+/* 커뮤니티 */
 function openCommunity(){ document.getElementById('communityOverlay').style.display='flex'; }
 function closeCommunity(){ document.getElementById('communityOverlay').style.display='none'; }
 </script>
