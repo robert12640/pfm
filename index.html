@@ -22,11 +22,13 @@ body {
   padding: 0 16px;
   background: white;
   border-bottom: 1px solid #eaeaea;
+  position: relative;
 }
 
-.left-icon {
+.sort-eye {
   font-size: 20px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .logo {
@@ -72,7 +74,55 @@ body {
   cursor: pointer;
 }
 
-/* ===== 정렬 안내 ===== */
+/* ===== 👀 정렬 드롭다운 ===== */
+.sort-menu {
+  position: absolute;
+  top: 56px;
+  left: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 180px;
+  z-index: 10;
+}
+
+.sort-menu div {
+  padding: 12px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sort-menu div:hover {
+  background: #f1f1f1;
+}
+
+/* ===== 커뮤니티 ===== */
+.community-menu {
+  position: absolute;
+  top: 56px;
+  right: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.community-menu div {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.community-menu div:hover {
+  background: #f1f1f1;
+}
+
+/* ===== 피드 ===== */
 .feed-title {
   max-width: 900px;
   margin: 16px auto 0;
@@ -81,7 +131,6 @@ body {
   color: #666;
 }
 
-/* ===== 피드 (2열 고정) ===== */
 .feed {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -107,14 +156,12 @@ body {
   display: block;
 }
 
-/* 👀 메타 */
+/* 메타 */
 .photo-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-size: 14px;
   padding: 8px 10px;
   background: white;
+  color: #333;
 }
 
 /* ===== 오버레이 ===== */
@@ -137,7 +184,7 @@ body {
   padding: 16px;
 }
 
-/* 평가 항목 */
+/* 평가 */
 .rating-list {
   display: flex;
   flex-direction: column;
@@ -160,45 +207,12 @@ body {
   font-weight: 600;
 }
 
-/* 코멘트 */
-.comment-box {
-  margin-top: 12px;
-}
-
 .comment-box textarea {
   width: 100%;
   min-height: 60px;
   margin-top: 6px;
   padding: 8px;
   font-size: 14px;
-}
-
-.comment {
-  font-size: 14px;
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
-}
-
-/* 커뮤니티 */
-.community-menu {
-  position: absolute;
-  top: 56px;
-  right: 16px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.community-menu div {
-  padding: 12px 16px;
-  cursor: pointer;
-}
-
-.community-menu div:hover {
-  background: #f1f1f1;
 }
 </style>
 </head>
@@ -207,22 +221,32 @@ body {
 
 <!-- 상단 -->
 <div class="topbar">
-  <div class="left-icon">👀</div>
+  <div class="sort-eye" onclick="toggleSort()">👀</div>
   <div class="logo">snappo</div>
 
   <div class="topbar-right">
     <div class="search-box">
-      <input placeholder="사진 키워드 / 구도 / 색감 검색" />
+      <input placeholder="사진 키워드 / 구도 / 색감 검색">
     </div>
     <div class="icon-btn" onclick="toggleCommunity()">💬</div>
-    <div class="icon-btn" onclick="alert('👀 정렬: 관심순')">👀</div>
   </div>
-</div>
 
-<div class="community-menu" id="communityMenu">
-  <div>자유게시판</div>
-  <div>질문게시판</div>
-  <div>소모임 게시판</div>
+  <!-- 정렬 메뉴 -->
+  <div class="sort-menu" id="sortMenu">
+    <div>👀 관심순</div>
+    <div>🆕 최신순</div>
+    <div>🎬 구도 위주</div>
+    <div>🌘 빛과 음영 위주</div>
+    <div>🎨 색감 위주</div>
+    <div>📚 스토리 위주</div>
+  </div>
+
+  <!-- 커뮤니티 -->
+  <div class="community-menu" id="communityMenu">
+    <div>자유게시판</div>
+    <div>질문게시판</div>
+    <div>소모임 게시판</div>
+  </div>
 </div>
 
 <div class="feed-title">👀 관심이 모이고 있는 사진</div>
@@ -233,14 +257,14 @@ body {
     <div class="photo-box">
       <img src="https://picsum.photos/400/600">
     </div>
-    <div class="photo-meta">👀 128</div>
+    <div class="photo-meta">👀 128 · 🎬 12 🌘 8</div>
   </div>
 
   <div class="photo-card" onclick="openOverlay()">
     <div class="photo-box">
       <img src="https://picsum.photos/400/500">
     </div>
-    <div class="photo-meta">👀 96</div>
+    <div class="photo-meta">👀 96 · 🎨 7 📚 4</div>
   </div>
 </div>
 
@@ -250,20 +274,27 @@ body {
     <h3>사진 평가</h3>
 
     <div class="rating-list">
-      <div class="rating-item" onclick="toggleRate(this,'🎬')">구도와 초점 <span>🎬</span></div>
-      <div class="rating-item" onclick="toggleRate(this,'🌘')">빛과 음영 <span>🌘</span></div>
-      <div class="rating-item" onclick="toggleRate(this,'🎨')">색감 <span>🎨</span></div>
-      <div class="rating-item" onclick="toggleRate(this,'📚')">스토리 <span>📚</span></div>
+      <div class="rating-item" onclick="toggleRate(this)">구도와 초점 <span>🎬</span></div>
+      <div class="rating-item" onclick="toggleRate(this)">빛과 음영 <span>🌘</span></div>
+      <div class="rating-item" onclick="toggleRate(this)">색감 <span>🎨</span></div>
+      <div class="rating-item" onclick="toggleRate(this)">스토리 <span>📚</span></div>
     </div>
 
     <div class="comment-box" id="commentBox"></div>
-
     <button onclick="closeOverlay()">닫기</button>
   </div>
 </div>
 
 <script>
-let selected = [];
+function toggleSort() {
+  const m = document.getElementById('sortMenu');
+  m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function toggleCommunity() {
+  const m = document.getElementById('communityMenu');
+  m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+}
 
 function openOverlay() {
   document.getElementById('overlay').style.display = 'flex';
@@ -271,37 +302,10 @@ function openOverlay() {
 
 function closeOverlay() {
   document.getElementById('overlay').style.display = 'none';
-  selected = [];
-  document.getElementById('commentBox').innerHTML = '';
-  document.querySelectorAll('.rating-item').forEach(i => i.classList.remove('active'));
 }
 
-function toggleRate(el, icon) {
-  if (selected.includes(icon)) {
-    selected = selected.filter(i => i !== icon);
-    el.classList.remove('active');
-  } else {
-    if (selected.length >= 4) return;
-    selected.push(icon);
-    el.classList.add('active');
-  }
-  renderComments();
-}
-
-function renderComments() {
-  const box = document.getElementById('commentBox');
-  box.innerHTML = '';
-  selected.forEach(icon => {
-    box.innerHTML += `
-      <div class="comment">${icon}</div>
-      <textarea placeholder="${icon}에 대한 짧은 평가"></textarea>
-    `;
-  });
-}
-
-function toggleCommunity() {
-  const menu = document.getElementById('communityMenu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+function toggleRate(el) {
+  el.classList.toggle('active');
 }
 </script>
 
